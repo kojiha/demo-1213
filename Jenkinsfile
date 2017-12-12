@@ -36,8 +36,11 @@ node {
     marathon(
         url: 'http://marathon.mesos:8080',
         forceUpdate: true,
-        filename: 'marathon.json'//,
-//        id: "${marathonId}",
-//        docker: "${registryUrl}${appImage}:${gitCommit()}".toString()
+        filename: 'marathon_db.json'
+    )
+    marathon(
+        url: 'http://marathon.mesos:8080',
+        forceUpdate: true,
+        filename: 'marathon_app.json'
     )
 }
