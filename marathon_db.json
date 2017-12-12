@@ -1,5 +1,5 @@
 {
-  "id": "/demo/demodb",
+  "id": "/demo-1213/database",
   "backoffFactor": 1.15,
   "backoffSeconds": 1,
   "container": {
@@ -53,10 +53,6 @@
     "minimumHealthCapacity": 0
   },
   "killSelection": "YOUNGEST_FIRST",
-  "unreachableStrategy": {
-    "inactiveAfterSeconds": 0,
-    "expungeAfterSeconds": 0
-  },
   "healthChecks": [],
   "fetch": [],
   "constraints": []

@@ -1,5 +1,5 @@
 {
-  "id": "/demo/demoapp",
+  "id": "/demo-1213/app",
   "instances": 1,
   "cpus": 0.1,
   "mem": 1024,
@@ -31,7 +31,7 @@
   },
   "healthChecks": [],
   "readinessChecks": [],
-  "dependencies": ["/demo/demodb"],
+  "dependencies": ["/demo-1213/database"],
   "upgradeStrategy": {
     "minimumHealthCapacity": 1,
     "maximumOverCapacity": 1
