@@ -45,7 +45,8 @@
   ],
   "requirePorts": false,
   "residency": {
-    "taskLostBehavior": "WAIT_FOREVER"
+    "taskLostBehavior": "WAIT_FOREVER",
+    "relaunchEscalationTimeoutSeconds": 30    
   },
   "upgradeStrategy": {
     "maximumOverCapacity": 0,
