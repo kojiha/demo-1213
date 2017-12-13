@@ -18,37 +18,33 @@ node {
     stage 'Build: Code'
 //    sh '/bin/sh ./mvnw package'
 
-
     def commitId = gitCommit()
 
     // Build Docker image
     stage 'Build: Docker Image'
- //   sh "docker build -t ${registryUrl}${appImage}:${commitId} -t ${registryUrl}${appImage}:latest docker/app"
- //   sh "docker build -t ${registryUrl}${dbImage}:${commitId} -t ${registryUrl}${dbImage}:latest docker/db"
+    sh "docker build -t ${registryUrl}${appImage}:${commitId} -t ${registryUrl}${appImage}:latest docker/app"
+    sh "docker build -t ${registryUrl}${dbImage}:${commitId} -t ${registryUrl}${dbImage}:latest docker/db"
 
     // Puch images
     stage 'Publish'
-//    sh "docker push ${registryUrl}${appImage}:${commitId}"
-//    sh "docker push ${registryUrl}${appImage}:latest"
-//    sh "docker push ${registryUrl}${dbImage}:${commitId}"
-//    sh "docker push ${registryUrl}${dbImage}:latest"
+    sh "docker push ${registryUrl}${appImage}:${commitId}"
+    sh "docker push ${registryUrl}${appImage}:latest"
+    sh "docker push ${registryUrl}${dbImage}:${commitId}"
+    sh "docker push ${registryUrl}${dbImage}:latest"
 
     // Deploy
-//    stage 'Deploy Database'
-//    sh "curl -X POST http://marathon.mesos:8080/v2/apps -d @marathon_db.json -H \"Content-type: application/json\""
-    marathon(
-        url: 'http://marathon.mesos:8080',
-        forceUpdate: true,
-        filename: 'marathon_db.json',
-//        docker: "${registryUrl}${dbImage}:${commitId}".toString()
-        docker: "${registryUrl}${dbImage}:latest".toString()
-    )
-
-    stage 'Deploy App'
+    stage 'Deploy'
     marathon(
         url: 'http://marathon.mesos:8080',
         forceUpdate: true,
         filename: 'marathon_app.json',
         docker: "${registryUrl}${appImage}:${commitId}".toString()
+    )
+
+    marathon(
+        url: 'http://marathon.mesos:8080',
+        forceUpdate: true,
+        filename: 'marathon_db.json',
+        docker: "${registryUrl}${dbImage}:${commitId}".toString()
     )
 }
