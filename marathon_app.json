@@ -28,7 +28,7 @@
       "parameters": [],
       "forcePullImage": true
     }
-  },
+  },  
   "healthChecks": [],
   "readinessChecks": [],
   "dependencies": ["/demo-1213/database"],
@@ -47,6 +47,6 @@
   },
   "labels": {
     "HAPROXY_GROUP": "external",
-    "HAPROXY_0_VHOST": "demoapp.app.dcos.local"
+    "HAPROXY_0_VHOST": "demoapp.app.dcosdev.local"
   }
 }
