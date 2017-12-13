@@ -35,13 +35,7 @@ node {
 
     // Deploy
     stage 'Deploy Database'
-    marathon(
-        url: 'http://marathon.mesos:8080',
-        forceUpdate: true,
-        filename: 'marathon_db.json',
-        docker: "${registryUrl}${dbImage}:${commitId}".toString()
-
-    )
+    sh "curl -X POST http://marathon.mesos:8080/v2/apps -d @marathon_db.json -H \"Content-type: application/json\""
 
     stage 'Deploy App'
     marathon(
