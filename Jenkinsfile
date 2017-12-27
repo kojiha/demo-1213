@@ -1,7 +1,6 @@
 def registryUrl = 'registry.marathon.l4lb.thisdcos.directory:5000'
 def appImage = '/demo/demoapp'
 def dbImage = '/demo/demodb'
-def marathonId = 'demo/spring-boot-demo'
 
 def gitCommit() {
     sh "git rev-parse HEAD > GIT_COMMIT"
@@ -19,16 +18,18 @@ node {
     stage 'Build: Code'
     mvn package
 
+    def commitId = gitCommit()
+
     // Build Docker image
     stage 'Build: Docker Image'
-    sh "docker build -t ${registryUrl}${appImage}:${gitCommit()} -t ${registryUrl}${appImage}:latest docker/app"
-    sh "docker build -t ${registryUrl}${dbImage}:${gitCommit()} -t ${registryUrl}${dbImage}:latest docker/db"
+    sh "docker build -t ${registryUrl}${appImage}:${commitId} -t ${registryUrl}${appImage}:latest docker/app"
+    sh "docker build -t ${registryUrl}${dbImage}:${commitId} -t ${registryUrl}${dbImage}:latest docker/db"
 
     // Puch images
     stage 'Publish'
-    sh "docker push ${registryUrl}${appImage}:${gitCommit()}"
+    sh "docker push ${registryUrl}${appImage}:${commitId}"
     sh "docker push ${registryUrl}${appImage}:latest"
-    sh "docker push ${registryUrl}${dbImage}:${gitCommit()}"
+    sh "docker push ${registryUrl}${dbImage}:${commitId}"
     sh "docker push ${registryUrl}${dbImage}:latest"
 
     // Deploy
@@ -36,15 +37,14 @@ node {
     marathon(
         url: 'http://marathon.mesos:8080',
         forceUpdate: true,
-        filename: 'marathon_db.json',
-        docker: "${registryUrl}${dbImage}:${gitCommit()}".toString()
-
+        filename: 'marathon_app.json',
+        docker: "${registryUrl}${appImage}:${commitId}".toString()
     )
 
     marathon(
         url: 'http://marathon.mesos:8080',
         forceUpdate: true,
-        filename: 'marathon_app.json',
-        docker: "${registryUrl}${appImage}:${gitCommit()}".toString()
+        filename: 'marathon_db.json',
+        docker: "${registryUrl}${dbImage}:${commitId}".toString()
     )
 }

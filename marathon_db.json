@@ -21,9 +21,9 @@
     ],
     "docker": {
       "image": "registry.marathon.l4lb.thisdcos.directory:5000/demo/demodb:latest",
-      "forcePullImage": false,
       "privileged": false,
-      "parameters": []
+      "parameters": [],
+      "forcePullImage": true
     }
   },
   "cpus": 0.1,
@@ -45,8 +45,7 @@
   ],
   "requirePorts": false,
   "residency": {
-    "taskLostBehavior": "WAIT_FOREVER",
-    "relaunchEscalationTimeoutSeconds": 30    
+    "taskLostBehavior": "WAIT_FOREVER"
   },
   "upgradeStrategy": {
     "maximumOverCapacity": 0,
