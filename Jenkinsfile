@@ -16,7 +16,7 @@ node {
 
     // Build the Java project
     stage 'Build: Code'
-    sh 'mvn package'
+    sh '/usr/lib/mvn/bin/mvn package'
 
     def commitId = gitCommit()
 
